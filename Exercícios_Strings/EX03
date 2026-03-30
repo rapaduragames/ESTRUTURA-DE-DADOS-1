@@ -1,0 +1,33 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+
+    ifstream arquivo("nomes.txt");
+    string linha;
+
+    if (!arquivo) {
+        cout << "Erro ao abrir o arquivo!" << endl;
+        return 1;
+    }
+
+    while (getline(arquivo, linha)) {
+        int pos = linha.find_last_of(" ");
+
+        // Último sobrenome
+        string sobrenome = linha.substr(pos + 1);
+
+        // Resto do nome
+        string resto = linha.substr(0, pos);
+
+        // Mostra no formato agenda
+        cout << sobrenome << ", " << resto << endl;
+    }
+
+    arquivo.close();
+
+    return 0;
+}
