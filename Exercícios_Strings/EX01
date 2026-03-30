@@ -1,0 +1,55 @@
+#include <iostream>
+#include <windows.h>
+using namespace std;
+
+// leva o pointeiro peo lugar certo
+void gotoxy(int x, int y) {
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+int main() {
+    string msg;
+
+    cout << "Digite a mensagem: ";
+    getline(cin, msg);
+
+    int linhaInicial = 5;
+    int linhaFinal = 20;
+
+
+    int colunaInicial = (80 - msg.length()) / 2;
+
+
+    gotoxy(colunaInicial, linhaInicial);
+    cout << msg;
+
+    Sleep(1000); 
+
+    // Faz cada letra cair
+    for (int i = 0; i < msg.length(); i++) {
+        for (int y = linhaInicial; y <= linhaFinal; y++) {
+
+            // Apaga letra da posição anterior
+            gotoxy(colunaInicial + i, y - 1);
+            cout << " ";
+
+            // Mostra letra na nova posição
+            gotoxy(colunaInicial + i, y);
+            cout << msg[i];
+
+            Sleep(50);
+        }
+    }
+
+  
+    gotoxy(colunaInicial, linhaFinal);
+    cout << msg;
+
+    gotoxy(0, linhaFinal + 2);
+    system("pause");
+
+    return 0;
+}
