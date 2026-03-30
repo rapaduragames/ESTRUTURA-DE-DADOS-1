@@ -1,0 +1,56 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <locale.h>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+
+    ifstream arquivo("nomes.txt");
+    string linha;
+
+    if (!arquivo) {
+        cout << "Erro ao abrir o arquivo!" << endl;
+        return 1;
+    }
+
+    while (getline(arquivo, linha)) {
+        stringstream ss(linha);
+        vector<string> nomes;
+        string palavra;
+
+        // separa os nomes
+        while (ss >> palavra) {
+            nomes.push_back(palavra);
+        }
+
+        int n = nomes.size();
+
+        // último nome (sobrenome)
+        string sobrenome = nomes[n - 1];
+
+        // deixa maiúsculo
+        for (int i = 0; i < sobrenome.length(); i++) {
+            sobrenome[i] = toupper(sobrenome[i]);
+        }
+
+        // imprime sobrenome
+        cout << sobrenome << ", ";
+
+        // primeiro nome
+        cout << nomes[0] << " ";
+
+        // nomes do meio (iniciais)
+        for (int i = 1; i < n - 1; i++) {
+            cout << (char)toupper(nomes[i][0]) << ". ";
+        }
+
+        cout << endl;
+    }
+
+    arquivo.close();
+    return 0;
+}
