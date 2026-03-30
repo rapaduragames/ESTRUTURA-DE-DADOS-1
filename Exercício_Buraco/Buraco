@@ -1,0 +1,79 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+
+    string baralho[2][52];
+    string todas[104];
+    string mao[4][11];
+
+    int index = 0;
+
+    //  Criar baralhos
+    for (int b = 0; b < 2; b++) {
+        int c = 0;
+
+        for (int naipe = 1; naipe <= 4; naipe++) {
+            for (int num = 1; num <= 13; num++) {
+
+                string carta = "";
+
+                // Naipe
+                carta += char(naipe + '0');
+
+                // Número (sem to_string)
+                if (num < 10) {
+                    carta += '0';
+                    carta += char(num + '0');
+                } else {
+                    carta += char((num / 10) + '0');
+                    carta += char((num % 10) + '0');
+                }
+
+                // Baralho (1 ou 2)
+                carta += char((b + 1) + '0');
+
+                baralho[b][c] = carta;
+                todas[index++] = carta;
+
+                c++;
+            }
+        }
+    }
+
+    //  Embaralhar
+    srand(time(0));
+
+    for (int i = 103; i > 0; i--) {
+        int j = rand() % (i + 1);
+
+        string temp = todas[i];
+        todas[i] = todas[j];
+        todas[j] = temp;
+    }
+
+    //  Distribuir
+    int pos = 0;
+
+    for (int j = 0; j < 4; j++) {
+        for (int c = 0; c < 11; c++) {
+            mao[j][c] = todas[pos++];
+        }
+    }
+
+    //  Mostrar mãos
+    for (int j = 0; j < 4; j++) {
+        cout << "\nJogador " << j + 1 << ": ";
+
+        for (int c = 0; c < 11; c++) {
+            cout << mao[j][c] << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
